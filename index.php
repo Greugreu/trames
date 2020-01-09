@@ -1,6 +1,7 @@
 <?php
 
 require 'functions/debug.php';
+/*include 'functions/functions.php';*/
 
 $fichier = file_get_contents('./files/cars.json');
 
@@ -10,41 +11,23 @@ foreach ($json as $cars) {
     $keys = array_keys($cars);
 }
 
-?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Cars</title>
-</head>
-<body>
-    <table>
-        <caption>Cars</caption>
-        <thead>
-            <?php
-            $head = '<tr>';
-            foreach ($keys as $key) {
-                $head .= $key;
-            }
-            $head .= '</tr>';
-            echo $head;
-            ?>
-        </thead>
-            <?php
-            $col = '<tbody>';
-            foreach ($json as $cars2) {
-                $col .= '<tr>';
-                foreach ($cars2 as $car) {
-                    $col .= '<td>'.$car.'</td>';
-                }
-                $col .= '</tr>';
-            }
-            $col .= '</tbody>';
-            echo $col
-            ?>
-    </table>
-</body>
-</html>
+function cmp($a, $b)
+{
+    return strcmp($a["Displacement"], $b["Displacement"]);
+}
 
-<?php
 
+usort($json, "cmp");
+
+while (list($key, $value) = each($json)) {
+    echo "\$Displacement[$key]: " . $value["Displacement"] . "\n";
+}
+
+/*
+ * rebuild le tableau
+ * faire des titres des liens avec argument d'url la clé
+ * changer la fonction cmp avec la clé en argument
+ * aller chercher la clé dans $get
+ * injection de la clé dans la fonction et dans usort
+ * réaffichage du tableau rangé en fonction de la clé
+ */
