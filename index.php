@@ -1,26 +1,50 @@
 <?php
+
 require 'functions/debug.php';
 
-if ($toto = fopen('./files/test.html', 'a+')) {
-   if (is_writable('./files/test.html')) {
-       $msg = '<!DOCTYPE html>' . PHP_EOL .
-'<html lang="en">'. PHP_EOL .
-'<head>'. PHP_EOL .
-'    <meta charset="UTF-8">'. PHP_EOL .
-'    <title>Title</title>'. PHP_EOL .
-'</head>'. PHP_EOL .
-'<body>'. PHP_EOL .
+$fichier = file_get_contents('./files/cars.json');
 
-'</body>'. PHP_EOL .
-'</html>'. PHP_EOL;
+$json = json_decode($fichier, true);
 
-       fwrite($toto, $msg);
-   } else {
-       echo 'marche po';
-   }
-} else {
-    echo 'File does not exist';
+foreach ($json as $cars) {
+    $keys = array_keys($cars);
 }
-echo $msg;
-debug($toto);
-fclose($toto);
+
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cars</title>
+</head>
+<body>
+    <table>
+        <caption>Cars</caption>
+        <thead>
+            <?php
+            $head = '<tr>';
+            foreach ($keys as $key) {
+                $head .= $key;
+            }
+            $head .= '</tr>';
+            echo $head;
+            ?>
+        </thead>
+            <?php
+            $col = '<tbody>';
+            foreach ($json as $cars2) {
+                $col .= '<tr>';
+                foreach ($cars2 as $car) {
+                    $col .= '<td>'.$car.'</td>';
+                }
+                $col .= '</tr>';
+            }
+            $col .= '</tbody>';
+            echo $col
+            ?>
+    </table>
+</body>
+</html>
+
+<?php
+
